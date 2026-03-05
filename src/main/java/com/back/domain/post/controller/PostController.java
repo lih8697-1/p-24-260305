@@ -18,24 +18,53 @@ public class PostController {
     @ResponseBody
     public String writeForm() {
 
-        return """
-                <form method="POST" action="/posts/write">
-                  <input type="text" name="title">
-                  <br>
-                  <textarea name="content"></textarea>
-                  <br>
-                  <input type="submit" value="작성">
-                </form>
-                """;
+        return getWriteForm("", "", "");
     }
 
     @PostMapping("/posts/write")
     @ResponseBody
     public String write(String title, String content) {
 
+        // 유효성 체크
+        if(title.isBlank()) {
+            return """
+                    <div style="color:red">제목을 입력해주세요.</div>
+                    %s
+                    """.formatted(getWriteForm(title, content, "title"));
+        }
+
+        if(content.isBlank()) {
+            return """
+                    <div style="color:red">내용을 입력해주세요.</div>
+                    %s
+                    """.formatted(getWriteForm(title, content, "content"));
+        }
+        //
+
         Post post = postService.write(title, content);
 
         return "%d번 글이 작성되었습니다.".formatted(post.getId());
+    }
+
+    private String getWriteForm(String title, String content, String errorFieldName) {
+        return """
+                <form method="post" action="/posts/write">
+                  <input type="text" name="title" value="%s" autoFocus>
+                  <br>
+                  <textarea name="content">%s</textarea>
+                  <br>
+                  <input type="submit" value="작성">
+                </form>
+                
+                <script>
+                    const errorFieldName = "%s";
+                
+                    if(errorFieldName.length > 0) {
+                        const form = document.querySelector("form");
+                        form[errorFieldName].focus();
+                    }
+                </script>
+                """.formatted(title, content, errorFieldName);
     }
 
 }
