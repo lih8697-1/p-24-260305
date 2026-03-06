@@ -22,11 +22,6 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/posts/write-form")
-    public String writeForm(@ModelAttribute("form") WriteRequestForm form) {
-        return "write";
-    }
-
     @AllArgsConstructor
     @Getter
     public static class WriteRequestForm {
@@ -39,30 +34,20 @@ public class PostController {
         private String content;
     }
 
+    @GetMapping("/posts/write")
+    public String writeForm(@ModelAttribute("form") WriteRequestForm form) {
+        return "write";
+    }
+
     @PostMapping("/posts/write")
     public String write(@Valid @ModelAttribute("form") WriteRequestForm form, BindingResult bindingResult,
                         Model model) {
 
         if(bindingResult.hasErrors()) {
-
-/*            String errorMessages = bindingResult.getFieldErrors()
-                    .stream()
-                    .map((fieldError) -> fieldError.getField() + "-" + fieldError.getDefaultMessage())
-                    .map((message) -> {
-                        String[] bits = message.split("-"); // [field, 1, errorMessage]
-                        return "<!-- %s --> <li data-error-field=\"%s\">%s</li>".formatted(bits[1], bits[0], bits[2]);
-                    })
-                    .sorted()
-                    .collect(Collectors.joining("\n"));
-
-            // 템플릿 응답
-            model.addAttribute("errorMessages", errorMessages);*/
             return "write";
         }
 
         Post post = postService.write(form.title, form.content);
-
-        // 템플릿 응답
         model.addAttribute("id", post.getId());
         return "writeDone";
     }
