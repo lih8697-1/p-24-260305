@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.stream.Collectors;
 
+// git reset HEAD^
 @Controller
 @RequiredArgsConstructor
 public class PostController {
@@ -24,7 +25,7 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/posts/write-form")
-    public String writeForm() {
+    public String writeForm(@ModelAttribute("form") WriteRequestForm form) {
         return "write";
     }
 
