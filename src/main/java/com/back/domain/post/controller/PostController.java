@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.stream.Collectors;
-
 // git reset HEAD^
 @Controller
 @RequiredArgsConstructor
@@ -47,7 +45,7 @@ public class PostController {
 
         if(bindingResult.hasErrors()) {
 
-            String errorMessages = bindingResult.getFieldErrors()
+/*            String errorMessages = bindingResult.getFieldErrors()
                     .stream()
                     .map((fieldError) -> fieldError.getField() + "-" + fieldError.getDefaultMessage())
                     .map((message) -> {
@@ -58,7 +56,7 @@ public class PostController {
                     .collect(Collectors.joining("\n"));
 
             // 템플릿 응답
-            model.addAttribute("errorMessages", errorMessages);
+            model.addAttribute("errorMessages", errorMessages);*/
             return "write";
         }
 
