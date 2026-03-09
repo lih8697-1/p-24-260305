@@ -1,7 +1,7 @@
-package com.back.domain.post.controller;
+package com.back.domain.post.post.controller;
 
-import com.back.domain.post.entity.Post;
-import com.back.domain.post.service.PostService;
+import com.back.domain.post.post.entity.Post;
+import com.back.domain.post.post.service.PostService;
 //import jakarta.transaction.Transactional;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
@@ -38,6 +38,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/write")
+    @Transactional(readOnly = true)
     public String writeForm(@ModelAttribute("form") WriteRequestForm form) {
         return "write";
     }
@@ -91,6 +92,7 @@ public class PostController {
     }
 
     @GetMapping("/posts")
+    @Transactional(readOnly = true)
     public String list(Model model) {
 
         model.addAttribute("posts", postService.findAll());
