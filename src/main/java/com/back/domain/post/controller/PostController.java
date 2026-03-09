@@ -2,7 +2,8 @@ package com.back.domain.post.controller;
 
 import com.back.domain.post.entity.Post;
 import com.back.domain.post.service.PostService;
-import jakarta.transaction.Transactional;
+//import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -65,6 +66,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/modify")
+    @Transactional(readOnly = true)
     public String modifyForm(@PathVariable int id, @ModelAttribute("form") ModifyRequestForm form) {
 
         Post post = postService.findById(id).get();
@@ -96,11 +98,11 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
+    @Transactional(readOnly = true)
     public String detail(@PathVariable int id, Model model) {
         Post post = postService.findById(id).get();
         model.addAttribute("post", post);
 
         return "detail";
     }
-
 }
