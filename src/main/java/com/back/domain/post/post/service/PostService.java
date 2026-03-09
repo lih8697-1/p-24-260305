@@ -26,6 +26,10 @@ public class PostService {
         return post;
     }
 
+    public void writeComment(Post post, String content) {
+        post.addComment(content);
+    }
+
     public Optional<Post> findById(int id) {
         return postRepository.findById(id);
     }
