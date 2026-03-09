@@ -49,7 +49,14 @@ public class PostController {
         }
 
         Post post = postService.write(form.title, form.content);
-        return "redirect:/posts/%d".formatted(post.getId()); // GET 요청
+        return "redirect:/posts/%d".formatted(post.getId()); // GET요청
+    }
+
+    @GetMapping("/posts")
+    public String list(Model model) {
+
+        model.addAttribute("posts", postService.findAll());
+        return "list";
     }
 
     @GetMapping("/posts/{id}")
