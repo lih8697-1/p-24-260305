@@ -26,8 +26,8 @@ public class PostService {
         return post;
     }
 
-    public void writeComment(Post post, String content) {
-        post.addComment(content);
+    public void deleteById(int id) {
+        postRepository.deleteById(id);
     }
 
     public Optional<Post> findById(int id) {

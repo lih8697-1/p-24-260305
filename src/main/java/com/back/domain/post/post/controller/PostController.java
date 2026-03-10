@@ -6,17 +6,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 // git reset HEAD^
-@Controller
+@CController
 @RequiredArgsConstructor
 public class PostController {
 
@@ -72,7 +68,7 @@ public class PostController {
         return "modify";
     }
 
-    @PostMapping("/posts/{id}/modify")
+    @PutMapping("/posts/{id}/modify")
     @Transactional
     public String modify(@PathVariable int id,
                          @Valid @ModelAttribute("form") ModifyRequestForm form,
@@ -86,6 +82,11 @@ public class PostController {
         return "redirect:/posts/%d".formatted(post.getId()); // GET요청
     }
 
+    @DeleteMapping("/posts/{id}/delete")
+    public String delete(@PathVariable int id) {
+        postService.deleteById(id);
+        return "redirect:/posts";
+    }
 
     @GetMapping("/posts")
     @Transactional(readOnly = true)
